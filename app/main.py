@@ -51,9 +51,12 @@ class Battleship:
     def __init__(self, ships: list) -> None:
         self.fields = {}
         for ship in ships:
-            new_ship = Ship(ship[0], ship[1])
-            for deck in new_ship.decks:
-                self.fields[(deck.row, deck.column)] = new_ship
+            if isinstance(ship, tuple):
+                new_ship = Ship(*ship)
+                for deck in new_ship.decks:
+                    self.fields[(deck.row, deck.column)] = new_ship
+            else:
+                raise ValueError(f"{ship} is not instance of tuple")
         try:
             self._validate_field()
         except ValueError as e:
